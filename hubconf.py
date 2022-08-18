@@ -1,0 +1,1 @@
+from wide_resnet_mge import wide_resnet50_2
