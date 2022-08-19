@@ -186,23 +186,26 @@ import megengine.hub as hub
 
 
 @hub.pretrained(
-    'https://studio.brainpp.com/api/v1/activities/3/missions/89/files/95277d2b-3dd2-47fe-8735-5fcbc63c0e2a'
+    'https://studio.brainpp.com/api/v1/activities/3/missions/89/files/24cb5aac-c359-44ae-97f2-e7b5a0c1fc5c'
 )
 def wide_resnet50_2():
-    return WideResNet(Bottleneck, [3, 4, 6, 3])
+    return WideResNet(Bottleneck, [3, 4, 6, 3], width_per_group=128)
 
 
+if __name__ == '__main__':
+    import torch
 
+    torch_checkpoint = torch.load('./wide_resnet50_2-9ba9bcbe.pth')
+    # mge_model = WideResNet(Bottleneck, [3, 4, 6, 3])
+    mge_model = wide_resnet50_2()
 
+    state_dict = mge_model.state_dict()
+    from convert_torch2mge import convert2mge
 
-
-# if __name__ == '__main__':
-#     import torch
-#     torch_checkpoint = torch.load('./model/wide_resnet50_2-9ba9bcbe.pth')
-#     mge_model = WideResNet(Bottleneck, [3, 4, 6, 3])
-#     state_dict = mge_model.state_dict()
-#     from convert_torch2mge import convert2mge
-#     new_state = convert2mge(torch_checkpoint, state_dict)
-#     mge.save(new_state, './model/wide_resnet50_2.mge')
-#     print('sssssssss')
-# state_dict = mge.load("./torch2mge_lenet.mge")
+    new_state = convert2mge(torch_checkpoint, state_dict)
+    mge.save(new_state, './wide_resnet50_2.mge')
+    # print('sssssssss')
+    state_dict = mge.load("./wide_resnet50_2.mge")
+    # mge_model = wide_resnet50_2()
+    mge_model.load_state_dict(state_dict)
+    print(mge_model)
