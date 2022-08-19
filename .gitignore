@@ -1,3 +1,5 @@
 # Created by .ignore support plugin (hsz.mobi)
 *.mge
 *.pth
+wide_resnet__mge.py
+convert_torch2mge.py
